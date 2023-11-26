@@ -1,0 +1,64 @@
+###
+GET http://localhost:8080/users/20
+
+###
+GET http://localhost:8080/users/2/notes
+
+###
+GET http://localhost:8080/users/4/permissions
+
+###
+GET http://localhost:8080/users/4/notes/canView
+
+###
+POST http://localhost:8080/users/2/permissions
+Content-Type: application/json
+
+{
+  "allowedId": 4,
+  "noteId": 2,
+  "canEdit": true,
+  "canView": true
+}
+
+###
+POST http://localhost:8080/users/4/notes
+Content-Type: application/json
+
+{
+  "title": "New note from post",
+  "content": "This is a new note for a user created with post",
+  "tags": ["new tag", "Spring REST"]
+}
+
+### Incorrect note
+POST http://localhost:8080/users/4/notes
+Content-Type: application/json
+
+{
+  "title": "ew ",
+  "content": "This is a new note for a user created with post",
+  "tags": ["new tag", "Spring REST"]
+}
+
+### user 4 can edit 2
+PUT http://localhost:8080/users/4/notes
+Content-Type: application/json
+
+{
+  "noteId": 2,
+  "title": "New title 2",
+  "content": "This is a edited note for a user created with post 2",
+  "tags": ["informa"]
+}
+
+### user 1 owns 3
+PUT http://localhost:8080/users/1/notes
+Content-Type: application/json
+
+{
+  "noteId": 3,
+  "title": "CC., àCCC",
+  "content": "This is a edited note for a user created with post 3",
+  "tags": ["pepe"]
+}
