@@ -5,12 +5,12 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record NoteCreation(
+public record NoteCreate(
         @Size(min=5, max=100)
-        @Pattern(regexp = "^[A-Z][a-zA-Z]*$", message = "Title must begin with a capital letter. Also only letters are allowed")
+        @Pattern(regexp = "^[A-ZÀÁÈÉÍÒÓÚÜ][A-Za-zÀ-ÿ\s.,;:_'\\-]*", message = "Title must begin with a capital letter. Also only letters are allowed")
         String title,
         @Size(min=5, max=100)
-        @Pattern(regexp = "^[A-Z][a-zA-Z]*$", message = "Content must begin with a capital letter. Also only letters are allowed")
+        @Pattern(regexp = "^[A-ZÀÁÈÉÍÒÓÚÜ].*", message = "Title must begin with a capital letter.")
         String content,
         List<String> tags) {
 }

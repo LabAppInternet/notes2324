@@ -1,11 +1,8 @@
 package cat.tecnocampus.notes2324.persistence;
 
-import cat.tecnocampus.notes2324.application.dtos.NoteDTO;
 import cat.tecnocampus.notes2324.application.dtos.PermissionDTO;
-import cat.tecnocampus.notes2324.domain.Note;
 import cat.tecnocampus.notes2324.domain.NotePermission;
 import cat.tecnocampus.notes2324.domain.NotePermissionId;
-import cat.tecnocampus.notes2324.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

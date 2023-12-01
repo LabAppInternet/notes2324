@@ -12,7 +12,7 @@ public class ExceptionHandlingAdvice {
     @ExceptionHandler(DomainException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    String objectNotFoundHandler(Exception ex) {
+    String domainExceptionHandler(Exception ex) {
         return ex.getMessage();
     }
 

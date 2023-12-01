@@ -11,7 +11,7 @@ GET http://localhost:8080/users/4/permissions
 GET http://localhost:8080/users/4/notes/canView
 
 ###
-POST http://localhost:8080/users/2/permissions
+POST http://localhost:8080/users/1/permissions
 Content-Type: application/json
 
 {
@@ -19,6 +19,17 @@ Content-Type: application/json
   "noteId": 2,
   "canEdit": true,
   "canView": true
+}
+
+###
+DELETE http://localhost:8080/users/1/permissions
+Content-Type: application/json
+
+{
+  "allowedId": 4,
+  "noteId": 2,
+  "canEdit": false,
+  "canView": false
 }
 
 ###
@@ -58,7 +69,7 @@ Content-Type: application/json
 
 {
   "noteId": 3,
-  "title": "CC., àCCC",
+  "title": "ÀCCC .'- :hola à Á",
   "content": "This is a edited note for a user created with post 3",
   "tags": ["pepe"]
 }
