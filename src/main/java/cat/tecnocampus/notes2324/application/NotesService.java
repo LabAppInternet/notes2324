@@ -1,9 +1,6 @@
 package cat.tecnocampus.notes2324.application;
 
-import cat.tecnocampus.notes2324.application.dtos.NoteCreate;
-import cat.tecnocampus.notes2324.application.dtos.NoteDTO;
-import cat.tecnocampus.notes2324.application.dtos.NoteUpdate;
-import cat.tecnocampus.notes2324.application.dtos.UserDTO;
+import cat.tecnocampus.notes2324.application.dtos.*;
 import cat.tecnocampus.notes2324.application.exceptions.NoteNotFoundException;
 import cat.tecnocampus.notes2324.application.exceptions.UserNotFoundException;
 import cat.tecnocampus.notes2324.application.mapper.NoteMapper;
@@ -17,7 +14,10 @@ import cat.tecnocampus.notes2324.persistence.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class NotesService {
@@ -35,7 +35,7 @@ public class NotesService {
         this.tagRepository = tagRepository;
     }
 
-    public UserDTO getUserById(long userId) {
+    public UserWithOwnedNotesDTO getUserById(long userId) {
         User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
         return UserMapper.userToUserDTO(user, noteRepository.findAllByOwner(user));
     }
@@ -62,10 +62,27 @@ public class NotesService {
         Note note = noteRepository.findById(noteUpdate.noteId()).orElseThrow(() -> new NoteNotFoundException(noteUpdate.noteId()));
 
         if (note.isOwner(user.getId()) || permissionService.userCanEditNote(user, note)) {
-            System.out.println("going to update note: " + note.getId());
             if (noteUpdate.title() != null) note.setTitle(noteUpdate.title());
             if (noteUpdate.content() != null) note.setContent(noteUpdate.content());
-            if (noteUpdate.tags() != null) noteUpdate.tags().stream().forEach(t -> note.addTag(new Tag(t)));
+            updateNoteTags(noteUpdate, note);
         }
+    }
+
+    private void updateNoteTags(NoteUpdate noteUpdate, Note note) {
+        Set<Tag> newTags;
+        if (noteUpdate.tags() != null)
+            newTags = noteUpdate.tags().stream().map(t -> new Tag(t)).collect(Collectors.toSet());
+        else newTags = new HashSet<>();
+
+        // tags to delete = current - new
+        Set<Tag> tagsToDelete = new HashSet<>(note.getTags());
+        tagsToDelete.removeAll(newTags);
+
+        tagsToDelete.stream().forEach(t -> note.removeTag(t));
+        newTags.stream().forEach(t -> note.addTag(t));
+    }
+
+    public List<UserDTO> getUsersRatedByNotes() {
+        return userRepository.findUsersRatedByNotes();
     }
 }

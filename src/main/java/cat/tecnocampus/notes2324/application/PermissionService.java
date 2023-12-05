@@ -1,8 +1,6 @@
 package cat.tecnocampus.notes2324.application;
 
-import cat.tecnocampus.notes2324.application.dtos.NoteDTO;
-import cat.tecnocampus.notes2324.application.dtos.PermissionCreation;
-import cat.tecnocampus.notes2324.application.dtos.PermissionDTO;
+import cat.tecnocampus.notes2324.application.dtos.*;
 import cat.tecnocampus.notes2324.application.exceptions.NoteNotFoundException;
 import cat.tecnocampus.notes2324.application.exceptions.NotePermissionNotFoundException;
 import cat.tecnocampus.notes2324.application.exceptions.UserDoesNotOwnNoteException;
@@ -36,6 +34,15 @@ public class PermissionService {
 
     public List<PermissionDTO> getUserPermissions(long userId) {
         return notePermissionRepository.findUserPermissions(userId);
+    }
+
+    //should we return an error if user does not exist? or would it be better to return an empty list not to give
+    // sensible information to possible attackers?
+    public List<UserDTO> getUsersCanViewNote(long noteId) {
+        return notePermissionRepository.findUsersWithPermissionCanView(noteId);
+    }
+    public List<UserDTO> getUsersWithPermissionCanEdit(long noteId) {
+        return notePermissionRepository.findUsersWithPermissionCanEdit(noteId);
     }
 
     public List<NoteDTO> getNotesUserCanView(long userId) {

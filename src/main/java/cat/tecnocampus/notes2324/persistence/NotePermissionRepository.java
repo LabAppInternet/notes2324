@@ -1,6 +1,7 @@
 package cat.tecnocampus.notes2324.persistence;
 
 import cat.tecnocampus.notes2324.application.dtos.PermissionDTO;
+import cat.tecnocampus.notes2324.application.dtos.UserDTO;
 import cat.tecnocampus.notes2324.domain.NotePermission;
 import cat.tecnocampus.notes2324.domain.NotePermissionId;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,20 @@ public interface NotePermissionRepository extends JpaRepository<NotePermission, 
         where np.note.id = :noteId and np.allowed.id = :userId and np.canEdit
         """)
     boolean canEdit(long userId, long noteId);
+
+    @Query("""
+        select new cat.tecnocampus.notes2324.application.dtos.UserDTO(u.id, u.name, u.email) 
+        from NotePermission np
+        join np.allowed u
+        where np.note.id = :noteId and np.canView
+        """)
+    List<UserDTO> findUsersWithPermissionCanView(long noteId);
+
+    @Query("""
+        select new cat.tecnocampus.notes2324.application.dtos.UserDTO(u.id, u.name, u.email) 
+        from NotePermission np
+        join np.allowed u
+        where np.note.id = :noteId and np.canEdit
+        """)
+    List<UserDTO> findUsersWithPermissionCanEdit(long noteId);
 }

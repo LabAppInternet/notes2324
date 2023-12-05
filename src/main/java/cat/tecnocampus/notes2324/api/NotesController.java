@@ -4,6 +4,7 @@ import cat.tecnocampus.notes2324.application.NotesService;
 import cat.tecnocampus.notes2324.application.PermissionService;
 import cat.tecnocampus.notes2324.application.dtos.*;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,8 +22,13 @@ public class NotesController {
     }
 
     @GetMapping("/users/{id}")
-    public UserDTO getUser(@PathVariable long id) {
+    public UserWithOwnedNotesDTO getUser(@PathVariable long id) {
         return notesService.getUserById(id);
+    }
+
+    @GetMapping("/users/ratedbynotes")
+    public List<UserDTO> getUsersRatedByNotes() {
+        return notesService.getUsersRatedByNotes();
     }
 
     @GetMapping("/users/{userId}/notes/canView")
@@ -45,7 +51,18 @@ public class NotesController {
         return notesService.getUserNotes(userId);
     }
 
+    @GetMapping("/notes/{noteId}/users/canView")
+    public List<UserDTO> getUsersCanViewNote(@PathVariable long noteId) {
+        return permissionService.getUsersCanViewNote(noteId);
+    }
+
+    @GetMapping("/notes/{noteId}/users/canEdit")
+    public List<UserDTO> getUsersWithPermissionCanEdit(@PathVariable long noteId) {
+        return permissionService.getUsersWithPermissionCanEdit(noteId);
+    }
+
     @PostMapping("/users/{ownerId}/notes")
+    @ResponseStatus(HttpStatus.CREATED)
     public void newUserNote(@PathVariable long ownerId, @RequestBody @Valid NoteCreate noteCreate) {
         notesService.createUserNote(ownerId, noteCreate);
     }
@@ -59,4 +76,6 @@ public class NotesController {
     public void revokePermission(@PathVariable long ownerId, @RequestBody PermissionCreation permissionCreation) {
         permissionService.revokePermission(ownerId, permissionCreation);
     }
+
+
 }

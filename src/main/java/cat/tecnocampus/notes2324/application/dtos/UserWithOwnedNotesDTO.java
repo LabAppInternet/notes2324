@@ -6,10 +6,11 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
-public record UserDTO(long id,
-                      @Size(min=5, max=10)
+public record UserWithOwnedNotesDTO(long id,
+                                    @Size(min=5, max=10)
                       @Pattern(regexp = "^[A-Z][a-zA-Z]*$", message = "Nickname must begin with a capital letter. Also only letters are allowed")
                       String name,
-                      @Email
-                      String email) {
+                                    @Email
+                      String email,
+                                    List<NoteDTO> notes) {
 }

@@ -1,14 +1,15 @@
 ###
-GET http://localhost:8080/users/20
+GET http://localhost:8080/users/100
 
 ###
-GET http://localhost:8080/users/2/notes
+GET http://localhost:8080/users/1/notes
 
 ###
 GET http://localhost:8080/users/4/permissions
 
 ###
 GET http://localhost:8080/users/4/notes/canView
+
 
 ###
 POST http://localhost:8080/users/1/permissions
@@ -33,7 +34,7 @@ Content-Type: application/json
 }
 
 ###
-POST http://localhost:8080/users/4/notes
+POST http://localhost:8080/users/1/notes
 Content-Type: application/json
 
 {
@@ -43,12 +44,12 @@ Content-Type: application/json
 }
 
 ### Incorrect note
-POST http://localhost:8080/users/4/notes
+POST http://localhost:8080/users/1/notes
 Content-Type: application/json
 
 {
-  "title": "ew ",
-  "content": "This is a new note for a user created with post",
+  "title": "New9",
+  "content": "his is a new note for a user created with post",
   "tags": ["new tag", "Spring REST"]
 }
 
@@ -57,10 +58,10 @@ PUT http://localhost:8080/users/4/notes
 Content-Type: application/json
 
 {
-  "noteId": 2,
-  "title": "New title 2",
+  "noteId": 1,
+  "title": "New title to update",
   "content": "This is a edited note for a user created with post 2",
-  "tags": ["informa"]
+  "tags": ["Spring MVC", "Spring Boot", "informa"]
 }
 
 ### user 1 owns 3
@@ -73,3 +74,13 @@ Content-Type: application/json
   "content": "This is a edited note for a user created with post 3",
   "tags": ["pepe"]
 }
+
+###
+GET http://localhost:8080/notes/2/users/canView
+
+###
+GET http://localhost:8080/notes/2/users/canEdit
+
+###
+GET http://localhost:8080/users/ratedbynotes
+
