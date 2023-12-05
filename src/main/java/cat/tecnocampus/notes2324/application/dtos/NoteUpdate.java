@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.List;
 
+// TODO 1.2: you may need to add some annotations here
 public record NoteUpdate(
         @NotNull
         long noteId,

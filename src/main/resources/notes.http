@@ -2,7 +2,7 @@
 GET http://localhost:8080/users/100
 
 ###
-GET http://localhost:8080/users/1/notes
+GET http://localhost:8080/users/8/notes
 
 ###
 GET http://localhost:8080/users/4/permissions
@@ -31,6 +31,17 @@ Content-Type: application/json
   "noteId": 2,
   "canEdit": false,
   "canView": false
+}
+
+###
+DELETE http://localhost:8080/users/2/permissions
+Content-Type: application/json
+
+{
+  "allowedId": 4,
+  "noteId": 5,
+  "canEdit": false,
+  "canView": true
 }
 
 ###

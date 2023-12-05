@@ -8,8 +8,9 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
+   //TODO 2.1 make the query
    @Query("""
-           select new cat.tecnocampus.notes2324.application.dtos.UserDTO(u.id, u.name, u.email) 
+           select new cat.tecnocampus.notes2324.application.dtos.UserDTO(u.id, u.name, u.email)
            from Note n 
            join User u on n.owner = u 
            where n.creationDate >= CURRENT_DATE - 30

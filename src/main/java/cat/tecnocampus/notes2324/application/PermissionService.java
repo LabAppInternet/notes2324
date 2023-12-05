@@ -68,12 +68,13 @@ public class PermissionService {
         return notePermissionRepository.existsById(new NotePermissionId(permissionCreation.noteId(), ownerId));
     }
 
+    @Transactional
     public void createNotePermissions(long ownerId, PermissionCreation permissionCreation) {
         Note note = noteRepository.findById(permissionCreation.noteId())
                 .orElseThrow(() -> new NoteNotFoundException(permissionCreation.noteId()));
         if(!note.isOwner(ownerId)) throw new UserDoesNotOwnNoteException(ownerId, note.getId());
 
-        //if user is not allowed to edit nor view permission is not created
+        //if user is not allowed to edit nor to view, permission is not created
         if (!permissionCreation.canEdit() && !permissionCreation.canView())
             return;
 
@@ -82,27 +83,29 @@ public class PermissionService {
         else actionCreateNotePermission(ownerId, permissionCreation, note);
     }
 
-
     @Transactional
     public void revokePermission(long ownerId, PermissionCreation permissionCreation) {
+        // TODO 4.2 get the note from the repository. If it does not exist, throw a NoteNotFoundException
         Note note = noteRepository.findById(permissionCreation.noteId())
                 .orElseThrow(() -> new NoteNotFoundException(permissionCreation.noteId()));
+        // TODO 4.3 check if the user is the owner of the note. If not, throw a UserDoesNotOwnNoteException
         if (!note.isOwner(ownerId))
             throw new UserDoesNotOwnNoteException(ownerId, note.getId());
 
-        NotePermissionId notePermissionId = new NotePermissionId(permissionCreation.noteId(), permissionCreation.allowedId());
         if (!permissionCreation.canEdit() && !permissionCreation.canView()) {
+            //TODO 4.4 delete the permission from the repository
+            NotePermissionId notePermissionId = new NotePermissionId(permissionCreation.noteId(), permissionCreation.allowedId());
             notePermissionRepository.deleteById(notePermissionId);
         }
-        else {
+        else { // you do not need to do anythig here. The code already updates the permission
             updatePermission(ownerId, permissionCreation);
         }
     }
 
     private void updatePermission(long ownerId, PermissionCreation permissionCreation) {
-        NotePermissionId notePermissionId = new NotePermissionId(permissionCreation.noteId(), ownerId);
+        NotePermissionId notePermissionId = new NotePermissionId(permissionCreation.noteId(), permissionCreation.allowedId());
         NotePermission permission =
-                notePermissionRepository.findById(new NotePermissionId(permissionCreation.noteId(), ownerId))
+                notePermissionRepository.findById(new NotePermissionId(permissionCreation.noteId(), permissionCreation.allowedId()))
                         .orElseThrow(() -> new NotePermissionNotFoundException(notePermissionId));
         permission.setCanEdit(permissionCreation.canEdit());
         permission.setCanView(permissionCreation.canView());

@@ -68,17 +68,17 @@ VALUES
 (52, 'Spring Note 17', 'This note is about Spring.', DATEADD('DAY', -17, CURRENT_DATE()), 8),
 (53, 'Spring Note 18', 'This note is about Spring.', DATEADD('DAY', -18, CURRENT_DATE()), 8),
 (54, 'Spring Note 19', 'This note is about Spring.', DATEADD('DAY', -19, CURRENT_DATE()), 8),
-(55, 'Spring Note 20', 'This note is about Spring.', DATEADD('DAY', -20, CURRENT_DATE()), 8),
-(56, 'Spring Note 21', 'This note is about Spring.', DATEADD('DAY', -21, CURRENT_DATE()), 8),
-(57, 'Spring Note 22', 'This note is about Spring.', DATEADD('DAY', -22, CURRENT_DATE()), 8),
-(58, 'Spring Note 23', 'This note is about Spring.', DATEADD('DAY', -23, CURRENT_DATE()), 8),
-(59, 'Spring Note 24', 'This note is about Spring.', DATEADD('DAY', -24, CURRENT_DATE()), 8),
-(60, 'Spring Note 25', 'This note is about Spring.', DATEADD('DAY', -25, CURRENT_DATE()), 8),
-(61, 'Spring Note 26', 'This note is about Spring.', DATEADD('DAY', -26, CURRENT_DATE()), 8),
-(62, 'Spring Note 27', 'This note is about Spring.', DATEADD('DAY', -27, CURRENT_DATE()), 8),
-(63, 'Spring Note 28', 'This note is about Spring.', DATEADD('DAY', -28, CURRENT_DATE()), 8),
-(64, 'Spring Note 29', 'This note is about Spring.', DATEADD('DAY', -29, CURRENT_DATE()), 8),
-(65, 'Spring Note 30', 'This note is about Spring.', DATEADD('DAY', -30, CURRENT_DATE()), 8);
+(55, 'Spring Note 20', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(56, 'Spring Note 21', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(57, 'Spring Note 22', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(58, 'Spring Note 23', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(59, 'Spring Note 24', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(60, 'Spring Note 25', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(61, 'Spring Note 26', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(62, 'Spring Note 27', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(63, 'Spring Note 28', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(64, 'Spring Note 29', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8),
+(65, 'Spring Note 30', 'This note is about Spring.', DATEADD('MONTH', -2, CURRENT_DATE()), 8);
 
 INSERT INTO tag (name)
 VALUES ('Spring Boot'),
@@ -135,4 +135,5 @@ VALUES (1, 4, 1, 1),
        (2, 4, 0, 1),
        (2, 5, 0, 1),
        (3, 4, 0, 1),
-       (4, 4, 1, 1);
+       (4, 4, 1, 1),
+       (5, 4, 1, 1);
