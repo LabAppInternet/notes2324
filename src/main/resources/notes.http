@@ -95,3 +95,29 @@ GET http://localhost:8080/notes/2/users/canEdit
 ###
 GET http://localhost:8080/users/ratedbynotes
 
+###
+GET http://localhost:8080/users/1/notes/2/comments
+
+###
+GET http://localhost:8080/users/70/notes/2/comments
+
+###
+POST http://localhost:8080/users/1/notes/2/comments
+content-type: application/json
+
+{
+  "title": "New comment from post",
+  "body": "This is a comment for a note created with post"
+}
+
+
+### user not owner
+POST http://localhost:8080/users/2/notes/2/comments
+content-type: application/json
+
+{
+  "title": "New comment from post",
+  "body": "This is a comment for a note created with post"
+}
+
+

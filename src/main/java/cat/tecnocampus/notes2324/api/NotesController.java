@@ -77,5 +77,15 @@ public class NotesController {
         permissionService.revokePermission(ownerId, permissionCreation);
     }
 
+    @GetMapping("/users/{userId}/notes/{noteId}/comments")
+    public List<CommentDTO> getNoteComments(@PathVariable long userId, @PathVariable long noteId) {
+        return notesService.getNoteComments(userId, noteId);
+    }
+
+    @PostMapping("/users/{userId}/notes/{noteId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void addNoteComment(@PathVariable long userId, @PathVariable long noteId, @RequestBody CommentDTO commentDTO) {
+        notesService.addNoteComment(userId, noteId, commentDTO);
+    }
 
 }

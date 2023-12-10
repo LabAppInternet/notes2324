@@ -55,6 +55,10 @@ public class PermissionService {
         return notePermissionRepository.canEdit(user.getId(), note.getId());
     }
 
+public boolean userCanViewNote (User user, Note note) {
+        return notePermissionRepository.canView(user.getId(), note.getId());
+    }
+
     private void actionCreateNotePermission(long ownerId, PermissionCreation permissionCreation, Note note) {
         User allowedUser = userRepository.findById(permissionCreation.allowedId())
                 .orElseThrow(() -> new UserNotFoundException(permissionCreation.allowedId()));
@@ -97,7 +101,7 @@ public class PermissionService {
             NotePermissionId notePermissionId = new NotePermissionId(permissionCreation.noteId(), permissionCreation.allowedId());
             notePermissionRepository.deleteById(notePermissionId);
         }
-        else { // you do not need to do anythig here. The code already updates the permission
+        else { // you do not need to do anything here. The code already updates the permission
             updatePermission(ownerId, permissionCreation);
         }
     }

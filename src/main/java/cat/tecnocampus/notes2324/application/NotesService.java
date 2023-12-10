@@ -2,18 +2,23 @@ package cat.tecnocampus.notes2324.application;
 
 import cat.tecnocampus.notes2324.application.dtos.*;
 import cat.tecnocampus.notes2324.application.exceptions.NoteNotFoundException;
+import cat.tecnocampus.notes2324.application.exceptions.UserDoesNotOwnNoteException;
 import cat.tecnocampus.notes2324.application.exceptions.UserNotFoundException;
+import cat.tecnocampus.notes2324.application.mapper.CommentMapper;
 import cat.tecnocampus.notes2324.application.mapper.NoteMapper;
 import cat.tecnocampus.notes2324.application.mapper.UserMapper;
+import cat.tecnocampus.notes2324.domain.Comment;
 import cat.tecnocampus.notes2324.domain.Note;
 import cat.tecnocampus.notes2324.domain.Tag;
 import cat.tecnocampus.notes2324.domain.User;
+import cat.tecnocampus.notes2324.persistence.CommentRepository;
 import cat.tecnocampus.notes2324.persistence.NoteRepository;
 import cat.tecnocampus.notes2324.persistence.TagRepository;
 import cat.tecnocampus.notes2324.persistence.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -26,13 +31,15 @@ public class NotesService {
     private final UserRepository userRepository;
     private final PermissionService permissionService;
     private final TagRepository tagRepository;
+    private final CommentRepository commentRepository;
 
     public NotesService(NoteRepository noteRepository, UserRepository userRepository, PermissionService permissionService,
-                        TagRepository tagRepository) {
+                        TagRepository tagRepository, CommentRepository commentRepository) {
         this.noteRepository = noteRepository;
         this.userRepository = userRepository;
         this.permissionService = permissionService;
         this.tagRepository = tagRepository;
+        this.commentRepository = commentRepository;
     }
 
     public UserWithOwnedNotesDTO getUserById(long userId) {
@@ -84,5 +91,23 @@ public class NotesService {
 
     public List<UserDTO> getUsersRatedByNotes() {
         return userRepository.findUsersRatedByNotes();
+    }
+
+    public void addNoteComment(long userId, long noteId, CommentDTO commentDTO) {
+        Note note = noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException(noteId));
+        if (!note.isOwner(userId))
+            throw new UserDoesNotOwnNoteException(userId, noteId);
+        Comment comment = new Comment(commentDTO.title(), commentDTO.body());
+        comment.setNote(note);
+        commentRepository.save(comment);
+    }
+
+    public List<CommentDTO> getNoteComments(long userId, long noteId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UserNotFoundException(userId));
+        Note note = noteRepository.findById(noteId).orElseThrow(() -> new NoteNotFoundException(noteId));
+
+        if (note.isOwner(userId) || permissionService.userCanViewNote(user, note)) {
+            return commentRepository.findAllByNote(note).stream().map(CommentMapper::commentToCommentDTO).toList();
+        } else return new ArrayList<>();
     }
 }

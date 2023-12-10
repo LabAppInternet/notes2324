@@ -32,6 +32,13 @@ public interface NotePermissionRepository extends JpaRepository<NotePermission, 
     boolean canEdit(long userId, long noteId);
 
     @Query("""
+        select count(*) >= 1 from NotePermission np
+        join np.note 
+        where np.note.id = :noteId and np.allowed.id = :userId and np.canView
+        """)
+    boolean canView(long userId, long noteId);
+
+    @Query("""
         select new cat.tecnocampus.notes2324.application.dtos.UserDTO(u.id, u.name, u.email) 
         from NotePermission np
         join np.allowed u
