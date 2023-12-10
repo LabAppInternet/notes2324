@@ -10,13 +10,14 @@ to see them pass. The tests in the other test files should fail until you implem
 * A code that doesn't compile or run will be marked zero points
 * Read the questions and the TODOs
 * All the questions are independent and can be answered in any order. So, if you get stuck in a question go ahead and attempt to answer another one.
-* In the code you'll see **TODO**s where you need to insert new code. TODOs explain what you need to do and may contain some clues. Please,
-  don't delete the TODOs from the code. TODOs are numbered according to the question number. When a question has more than one TODO they are
+* In the code you'll see **TODO**s where you need to insert new code. TODOs explain what you need to do and may contain some clues.  TODOs are numbered according to the question number. When a question has more than one TODO they are
   numbered TODO X.1, TODO X.2 and so on, where X is the question number. There are few TODOs that don't need any code, they are there to explain code relevant to the question (and its answer)
+* Please,
+  don't delete the TODOs from the code.
 
 #### TODOs in Intellij
 In Intellij you can see all the TODOs in the TODO tool window. You can open it using the menu View -> Tool Windows -> TODO.
-It is a good idea to use this tool window to keep track of the TODOs you have to do. You can also navigate to the TODOs in the from this window.
+It is a good idea to use this tool window to keep track of the TODOs you have to do. You can also navigate to the TODOs in the code from this window.
 
 ## Taking and Sharing Notes
 In this application, **users** are able to create and edit **notes** as well as giving permission to view and/or edit notes to other users. 
@@ -31,8 +32,8 @@ this class is identified by the user and the note with an embedded id.
 
 The **data.sql** file contains some data to test the application. If you change it, some tests may fail. There are users, notes, tags and permissions.
 
-You also have test suites that you can run to check whether your code is correct. Tests can help you to see if your code is correct, but passing the tests doesn't mean 
-that your code is correct. 
+You also have test suites that you can run to check whether your code is correct. Tests can help you to see if your code is correct, but passing the tests doesn't 
+necessarily mean that your code is correct. 
 
 ## Questions 
 Each question is independent of the others. You can answer them in any order. Two points are given for each question.
@@ -51,12 +52,16 @@ You may want to copy an entire file from the Tinder or your own project to imple
 ### Question 2: Query top owners
 We want an ordered list of the users that have created more notes during the last 30 days. The list must be ordered by the number of notes created in descending order.
 
-### Question 3: Owners can add comments to their notes (and only to their notes). Also, can see their comments and the comments of other notes they have permission to view
+### Question 3: Owners can add comments to their notes (and only to their notes). 
+The note owners can add comments to their notes (and only to their notes). Also, users can see their comments and the comments of other notes they have permission to view.
 A comment of a note has a title and a body. A note can have many comments and a comment belongs to a note. You should implement the relationship as a @ManyToOne.
+
 To create a comment, the call has the following format:
 ```POST /users/{userId}/notes/{noteId}/comments``` and the body of the call is the comment to create. The comment must have a title and a body.
+
 To list the comments of a note, the call has the following format:
 ```GET /users/{userId}/notes/{noteId}/comments```
+
 Don't forget to use a DTO to return the comments. The DTO must have the id, title and body of the comment.
 
 ### Question 4: Complete the revokePermission method

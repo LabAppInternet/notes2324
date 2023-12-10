@@ -55,7 +55,7 @@ class Notes2324ApplicationTests {
     void getNotesNonExistingUserCanView() throws Exception {
         mockMvc.perform(get("/users/100/notes/canView")
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().string("User with id: 100 not found"));
     }
 

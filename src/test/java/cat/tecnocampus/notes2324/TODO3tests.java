@@ -94,7 +94,7 @@ public class TODO3tests {
 
         mockMvc.perform(get("/users/100/notes/2/comments")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().string("User with id: 100 not found"));
 
     }
@@ -103,7 +103,7 @@ public class TODO3tests {
     void getNoteCommentsNoteDoesNotExist() throws Exception {
         mockMvc.perform(get("/users/2/notes/200/comments")
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is4xxClientError())
+                .andExpect(status().isBadRequest())
                 .andExpect(content().string("Note with id: 200 doesn't exist"));
 
     }
