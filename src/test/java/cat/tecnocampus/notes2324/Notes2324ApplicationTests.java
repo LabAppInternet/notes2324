@@ -3,7 +3,10 @@ package cat.tecnocampus.notes2324;
 import cat.tecnocampus.notes2324.application.NotesService;
 import cat.tecnocampus.notes2324.application.dtos.NoteDTO;
 import cat.tecnocampus.notes2324.domain.Note;
+import cat.tecnocampus.notes2324.domain.NotePermission;
+import cat.tecnocampus.notes2324.domain.NotePermissionId;
 import cat.tecnocampus.notes2324.domain.Tag;
+import cat.tecnocampus.notes2324.persistence.NotePermissionRepository;
 import cat.tecnocampus.notes2324.persistence.NoteRepository;
 import cat.tecnocampus.notes2324.persistence.TagRepository;
 import jakarta.transaction.Transactional;
@@ -20,8 +23,7 @@ import java.util.Set;
 import static org.assertj.core.api.AssertionsForInterfaceTypes.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -39,6 +41,8 @@ class Notes2324ApplicationTests {
     private TagRepository tagRepository;
     @Autowired
     private NoteRepository noteRepository;
+    @Autowired
+    private NotePermissionRepository notePermissionRepository;
 
     @Test
     void getNotesUserCanView() throws Exception {
@@ -214,6 +218,87 @@ class Notes2324ApplicationTests {
         assertEquals("Spring Security", note1.getTitle());
         assertTrue(note1.getTags().isEmpty());
     }
+    @Test
+    void grantUserPermissionNotGrandingPermissionsThusNotCreated() throws Exception {
+        String permission = """
+                {
+                    "noteId": 4,
+                    "allowedId": 2,
+                    "canView": false,
+                    "canEdit": false
+                }""";
+        mockMvc.perform(post("/users/2/permissions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permission))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").doesNotExist());
+
+        assertFalse(notePermissionRepository.findById(new NotePermissionId(4L, 2L)).isPresent());
+    }
+
+    @Test
+    void grantUserPermissionNewHappyPath() throws Exception {
+        String permission = """
+                {
+                    "noteId": 4,
+                    "allowedId": 2,
+                    "canView": true,
+                    "canEdit": true
+                }""";
+        mockMvc.perform(post("/users/2/permissions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permission))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").doesNotExist());
+
+        assertTrue(notePermissionRepository.findById(new NotePermissionId(4L, 2L)).get().isCanEdit() &&
+                notePermissionRepository.findById(new NotePermissionId(4L, 2L)).get().isCanView());
+
+        // remove permission
+        notePermissionRepository.deleteById(new NotePermissionId(4L, 2L));
+    }
+
+    @Test
+    @Transactional
+    void grantUserPermissionEditHappyPath() throws Exception {
+        String permission = """
+                {
+                    "noteId": 2,
+                    "allowedId": 4,
+                    "canView": true,
+                    "canEdit": true
+                }""";
+        mockMvc.perform(post("/users/1/permissions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permission))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$").doesNotExist());
+
+        assertTrue(notePermissionRepository.findById(new NotePermissionId(2L, 4L)).get().isCanEdit() &&
+                notePermissionRepository.findById(new NotePermissionId(2L, 4L)).get().isCanView());
+
+        // save permission as it was before
+        NotePermission notePermission = notePermissionRepository.findById(new NotePermissionId(2L, 4L)).get();
+        notePermission.setCanEdit(false);
+    }
+
+    @Test
+    @Transactional
+    void grantUserPermissionUserNotOwner() throws Exception {
+        String permission = """
+                {
+                    "noteId": 2,
+                    "allowedId": 4,
+                    "canView": true,
+                    "canEdit": true
+                }""";
+        mockMvc.perform(post("/users/2/permissions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(permission))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("User with id: 2 does not own note with id: 2"));
+    }
+
 }
 
 

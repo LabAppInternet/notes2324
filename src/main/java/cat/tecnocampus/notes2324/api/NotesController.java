@@ -44,6 +44,7 @@ public class NotesController {
     }
 
     @PostMapping("/users/{ownerId}/permissions")
+    @ResponseStatus(HttpStatus.CREATED)
     public void newPermission(@PathVariable long ownerId, @RequestBody PermissionCreation permissionCreation) {
         permissionService.createNotePermissions(ownerId, permissionCreation);
     }
