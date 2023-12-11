@@ -21,6 +21,8 @@ public class NotesController {
         this.permissionService = permissionService;
     }
 
+    //TODO 2.1: when calling this entry point, it must return the list of users ordered. You only need to implement the query in the repository
+    // (go to: todo2.2)
     @GetMapping("/users/{id}")
     public UserWithOwnedNotesDTO getUser(@PathVariable long id) {
         return notesService.getUserById(id);
@@ -77,11 +79,13 @@ public class NotesController {
         permissionService.revokePermission(ownerId, permissionCreation);
     }
 
+    //TODO 3.2: you need to implement the entry point to get the comments of a note: GET /users/{userId}/notes/{noteId}/comments
     @GetMapping("/users/{userId}/notes/{noteId}/comments")
     public List<CommentDTO> getNoteComments(@PathVariable long userId, @PathVariable long noteId) {
         return notesService.getNoteComments(userId, noteId);
     }
 
+    //TODO 3.1: you need to implement the entry point to add a comment to a note. POST /users/{userId}/notes/{noteId}/comments
     @PostMapping("/users/{userId}/notes/{noteId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
     public void addNoteComment(@PathVariable long userId, @PathVariable long noteId, @RequestBody CommentDTO commentDTO) {

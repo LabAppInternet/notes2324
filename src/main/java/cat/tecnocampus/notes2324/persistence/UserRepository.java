@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Long> {
-   //TODO 2.1 make the query
+   //TODO 2.2 write the query
    @Query("""
            select new cat.tecnocampus.notes2324.application.dtos.UserDTO(u.id, u.name, u.email)
            from Note n 
