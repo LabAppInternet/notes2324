@@ -3,7 +3,7 @@
 ## Before you begin
 * Read this file carefully
 * BEFORE **touching** the code, run the application and see it working on your computer. You may also want to run the tests in *Notes2324ApplicationTests*
-  to see them pass. There is a set of tests for each question in a separated file. They should fail until you implement the corresponding exercise.
+  to see them pass. There is a set of tests for each question in a separate file. They should fail until you implement the corresponding exercise.
 * You have example calls in the file "resources/notes.http," but it might be easier to use the **swagger** documentation at http://localhost:8080/swagger-ui.html
 * You have the h2-console enabled at http://localhost:8080/h2-console. The database is in memory, and it is created every time you run the application.
 * When attempting to answer the questions, modify the code in small steps and try the application (run it) after every step. In this way, it is easier to track possible errors
@@ -26,7 +26,7 @@ Notes have a title, content, creation date, and tags list. **Tags** are identifi
 The relationship between users (owners) and notes is implemented as a @OneToMany relationship. It means that notes have a reference to their owner. See that the
 Note class implements the method isOwner(userId) that returns true if the given user is the note owner. You may want to use this method in Question 4.
 
-A **NotePermission** is a class that represents a user's permission over a note. A NotePermission has a user (the user that has the permission),
+A **NotePermission** is a class that represents a user's permission over a note. A NotePermission has a user (the user that has permission),
 a note (the note that the user has permission to see and/or edit), and two booleans representing the permissions (view and/or edit). See that
 the user and the note with an embedded id identify this class. The note's owner is the only one that can grant permissions.
 
@@ -79,4 +79,4 @@ call with id 1 should return isOk HTTP code (200) and
 should have "Pere" as the name, "pere@tecnocampus.cat" as the email, and should have 3 notes with titles: "Spring Boot Introduction", "Spring Data JPA", and "Spring Security".
 
 The second test
-with a non-existing user with id 1000. It should return isBadRequest HTTP code (400) and the response body should be "User with id: 100 not found"
+with a non-existing user with id 1000. It should return isBadRequest HTTP code (400), and the response body should be "User with id: 100 not found"

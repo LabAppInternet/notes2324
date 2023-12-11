@@ -64,21 +64,21 @@ public class NotesService {
     }
 
     @Transactional
-    public void updateUserNote(long ownerId, NoteUpdate noteUpdate) {
+    public void updateUserNote(long ownerId, NoteCreate noteUpdate) {
         User user = userRepository.findById(ownerId).orElseThrow(() -> new UserNotFoundException(ownerId));
         Note note = noteRepository.findById(noteUpdate.noteId()).orElseThrow(() -> new NoteNotFoundException(noteUpdate.noteId()));
 
         if (note.isOwner(user.getId()) || permissionService.userCanEditNote(user, note)) {
             if (noteUpdate.title() != null) note.setTitle(noteUpdate.title());
             if (noteUpdate.content() != null) note.setContent(noteUpdate.content());
-            updateNoteTags(noteUpdate, note);
+            updateNoteTags(noteUpdate.tags(), note);
         }
     }
 
-    private void updateNoteTags(NoteUpdate noteUpdate, Note note) {
+    private void updateNoteTags(List<String> tags, Note note) {
         Set<Tag> newTags;
-        if (noteUpdate.tags() != null)
-            newTags = noteUpdate.tags().stream().map(t -> new Tag(t)).collect(Collectors.toSet());
+        if (tags != null)
+            newTags = tags.stream().map(t -> new Tag(t)).collect(Collectors.toSet());
         else newTags = new HashSet<>();
 
         // tags to delete = current - new

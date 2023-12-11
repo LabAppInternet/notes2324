@@ -70,7 +70,7 @@ public class NotesController {
     }
 
     @PutMapping("/users/{ownerId}/notes")
-    public void updateUserNote(@PathVariable long ownerId, @RequestBody @Valid NoteUpdate noteUpdate) {
+    public void updateUserNote(@PathVariable long ownerId, @RequestBody @Valid NoteCreate noteUpdate) {
         notesService.updateUserNote(ownerId, noteUpdate);
     }
 
