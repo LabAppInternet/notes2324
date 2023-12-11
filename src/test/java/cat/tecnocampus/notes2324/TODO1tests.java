@@ -14,7 +14,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-// TODO 1.0: See them fail and than make them pass completing the exercise
+// TODO 1.0: See them fail and then make them pass completing the exercise
 @SpringBootTest
 @AutoConfigureMockMvc
 public class TODO1tests {
