@@ -11,7 +11,7 @@
 * All the questions are independent and can be answered in any order. So, if you get stuck on a question, attempt to answer another one.
 * Read the questions and the TODOs
 * In the code, you'll see **TODO**s where you must insert new code. TODOs explain what you need to do and may contain some clues. TODOs are numbered according to the question number. When a question has more than one TODO, they are
-  numbered TODO X.1, TODO X.2, .., where X is the question number. There are few TODOs that don't need any code, and they are there to explain code relevant to the question (and its answer)
+  numbered TODO X.1, TODO X.2, .., where X is the question number. Few TODOs don't need any code, and they are there to explain code relevant to the question (and its answer)
 * Please,
   don't delete the TODOs from the code.
 
@@ -23,7 +23,7 @@ It is a good idea to use this tool window to track the TODOs you must do. You ca
 In this application, **users** can create and edit **notes** as well as give permission to view and/or edit notes to other users.
 Notes have a title, content, creation date, and tags list. **Tags** are identified by their name (string) that can be used to classify notes.
 
-The relationship between users (owners) and notes is implemented as a @OneToMany relationship. It means that notes have a reference to their owner. See that the
+The relationship between users (owners) and notes is implemented as a @ManyToOne relationship. It means that notes have a reference to their owner. See that the
 Note class implements the method isOwner(userId) that returns true if the given user is the note owner. You may want to use this method in Question 4.
 
 A **NotePermission** is a class that represents a user's permission over a note. A NotePermission has a user (the user that has permission),
