@@ -47,8 +47,9 @@ The content must begin with a capital letter and contain any of the letters as s
 
 Both title and content must be between 5 and 100 characters long.
 
-When the title and/or the content don't follow the former rules, the client must receive a bad request (400) with a message with a list of the violations.
-You may want to copy an entire file from the Tinder project or your own project to implement this last part.
+When the title and/or the content don't follow the former rules, the client must receive a bad request (400 HTTP Code) with a message with a list of the violations.
+You may want to copy an entire file from the Tinder project or your own project to implement this last part. 
+https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
 
 ### Question 2: Query top owners
 We want an ordered list of the users who have created more notes during the last 30 days. The list must be ordered by the number of notes created in descending order.
